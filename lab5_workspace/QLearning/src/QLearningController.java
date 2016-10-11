@@ -24,7 +24,7 @@ public class QLearningController extends Controller {
 	RocketEngine middleEngine;
 	RocketEngine rightEngine;
 
-	final static int NUM_ACTIONS = 7; /* The takeAction function must be changed if this is modified */
+	final static int NUM_ACTIONS = 4; /* The takeAction function must be changed if this is modified */
 	
 	/* Keep track of the previous state and action */
 	String previous_state = null;
@@ -82,14 +82,22 @@ public class QLearningController extends Controller {
 		middleEngine.setBursting(false);
 	}
 
-	/* Performs the chosen action */
-	void performAction(int action) {
+	 /* Performs the chosen action */
+    void performAction(int action) {
+        if(action==0) {
+            leftEngine.setBursting(true);
+        } else if(action==1) {
+            rightEngine.setBursting(true);
+        }else if(action==2) {
+            leftEngine.setBursting(false);
+        }else if(action==3) {
+            rightEngine.setBursting(false);
+        }
+        /* Fire zeh rockets! */
+        /* TODO: Remember to change NUM_ACTIONS constant to reflect the number of actions (including 0, no action) */
 
-		/* Fire zeh rockets! */
-		/* TODO: Remember to change NUM_ACTIONS constant to reflect the number of actions (including 0, no action) */
-		
-		/* TODO: IMPLEMENT THIS FUNCTION */
-		
+        /* TODO: IMPLEMENT THIS FUNCTION */
+
 	}
 
 	/* Main decision loop. Called every iteration by the simulator */
@@ -117,17 +125,21 @@ public class QLearningController extends Controller {
 					Ntable.put(prev_stateaction, 0);
 				}
 				Ntable.put(prev_stateaction, Ntable.get(prev_stateaction) + 1);
+				
+
+				/* TODO: IMPLEMENT Q-UPDATE HERE! */
 
 				/* Update Q value */
 				if (Qtable.get(prev_stateaction) == null) {
 					Qtable.put(prev_stateaction, 0.0);
-				} 
-
+				}
 				
-				/* TODO: IMPLEMENT Q-UPDATE HERE! */
+				Qtable.put(prev_stateaction,
+						Qtable.get(prev_stateaction)+ alpha(Ntable.get(prev_stateaction)) * 
+							(previous_reward + GAMMA_DISCOUNT_FACTOR*getMaxActionQValue(new_state) - Qtable.get(prev_stateaction) ));
+											
 				
 				/* See top for constants and below for helper functions */
-				
 				
 				int action = selectAction(new_state); /* Make sure you understand how it selects an action */
 
