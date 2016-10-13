@@ -32,16 +32,13 @@ public class StateAndReward {
 	public static double getRewardAngle(double angle, double vx, double vy) {
 
 		double reward = 0;
-        //double reward = angle*angle*(-1/90) + 2*angle;
-		//reward = 10-Math.abs(reward);
-		if(angle<0.5 && angle > -0.5){
+       
+		if(angle<1.30 && angle > -1.30){
 			reward = 5;
 		}
 		if(angle<0.05 && angle > -0.05) {
 			reward = 10;
 		}
-		
-		
         return reward;
 	}
 
