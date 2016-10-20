@@ -1,11 +1,11 @@
 public class StateAndReward {
-
+	
 
 	/* State discretization function for the angle controller */
 	public static String getStateAngle(double angle, double vx, double vy) {
 
 		/* TODO: IMPLEMENT THIS FUNCTION */
-
+		
 
 		String state = "OneStateToRuleThemAll";
 		if(angle<-2.355){
@@ -41,26 +41,44 @@ public class StateAndReward {
 		}
         return reward;
 	}
-
-	/* State discretization function for the full hover controller */
+	public static final int ANGLE_RESOLUTION = 11;
+	public static final int VY_RESOLUTION = 7;
+	
+	public static final int VELOCITY_BOUND = 1;
+	
+	
+	/*reward discretization function for the full hover controller */
 	public static String getStateHover(double angle, double vx, double vy) {
 
-		/* TODO: IMPLEMENT THIS FUNCTION */
-
-		String state = "OneStateToRuleThemAll2";
+		String state = "a-" + discretize(angle,11,-0.3,0.3) +
+					   " vy-" + discretize(vy,7,-4,1);
 		
 		return state;
 	}
 
 	/* Reward function for the full hover controller */
 	public static double getRewardHover(double angle, double vx, double vy) {
+		int a_reward = 0, vy_reward =0;
 
-		/* TODO: IMPLEMENT THIS FUNCTION */
+		if(angle<1.30 && angle > -1.30){
+			a_reward = 5;
+		}
+		if(angle<0.05 && angle > -0.05) {
+			a_reward = 10;
+		}
 		
-		double reward = 0;
+		if(vy<1 && vy > -1){
+			vy_reward = 5;
+		}
+		if(vy<0.3 && vy > -0.3) {
+			vy_reward = 10;
+		}
 
-		return reward;
+		
+		return a_reward + vy_reward;
 	}
+
+	
 
 	// ///////////////////////////////////////////////////////////
 	// discretize() performs a uniform discretization of the
